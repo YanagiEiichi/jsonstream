@@ -1,6 +1,6 @@
 var Parser = require('./parser.js');
 
-var ENTITYMAP = { b: '\b', f: '\b', n: '\n', r: '\r', t: '\t', '"': '"', '\\': '\\' };
+var ENTITYMAP = { b: '\b', f: '\b', n: '\n', r: '\r', t: '\t', '"': '"', '\\': '\\', '/': '/' };
 
 var StringParser = function(stream, onupdate) {
   var that = Parser.call(this, stream, onupdate, 'String');
