@@ -1,0 +1,30 @@
+{
+  "name": "jsonstream",
+  "version": "1.0.0",
+  "description": "An asynchronous JSON loader",
+  "main": "src/entity.js",
+  "directories": {
+    "test": "tests"
+  },
+  "devDependencies": {
+    "webpack": "^1.8.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:YanagiEiichi/jsonstream.git"
+  },
+  "keywords": [
+    "JSON",
+    "stream",
+    "parser"
+  ],
+  "author": "YanagiEiichi <admin@web-tinker.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YanagiEiichi/jsonstream/issues"
+  },
+  "homepage": "https://github.com/YanagiEiichi/jsonstream"
+}
