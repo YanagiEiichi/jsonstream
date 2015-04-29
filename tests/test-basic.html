@@ -1,0 +1,24 @@
+<script src="bower_components/tester/tester.js"></script>
+<script src="../jsonstream.js"></script>
+<script>
+var stream = new JSONStream();
+
+stream.onupdate = function() {
+  // console.log(stream.result);
+};
+
+stream.oncomplete = function() {
+  Tester.assert(JSON.stringify(stream.result) === answer, 'answer not matched');
+  Tester.feedback(true);
+};
+
+var raw = '[-3.14e3,"21\\t3",true,[1,2,3],{"a":1,"b":[123,345,567]}]';
+var answer = '[-3140,"21\\t3",true,[1,2,3],{"a":1,"b":[123,345,567]}]';
+
+void function callee(i) {
+  if(i >= raw.length) return stream.end();
+  stream.push(raw.charAt(i));
+  setTimeout(callee, 16, i + 1);
+}(0);
+</script>
+

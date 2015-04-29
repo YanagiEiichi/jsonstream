@@ -1,0 +1,18 @@
+{
+  "name": "tests",
+  "version": "N/A",
+  "authors": [
+    "YanagiEiichi <admin@web-tinker.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "tester": "~0.0.6"
+  }
+}
