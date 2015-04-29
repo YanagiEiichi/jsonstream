@@ -27,13 +27,8 @@ JSONStream.prototype.end = function() {
 
 // Loader Matcher
 switch(true) {
-  case typeof define === 'function':
-    define(function() {
-      return JSONStream;
-    });
-    break;
   case typeof angular === 'object' && typeof angular.module === 'function':
-    angular.module('JSONStream').factory('JSONStream', function() {
+    angular.module('JSONStream', []).factory('JSONStream', function() {
       return JSONStream;
     });
     break;
