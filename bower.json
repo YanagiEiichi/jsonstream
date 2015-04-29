@@ -1,0 +1,17 @@
+{
+  "name": "jsonstream",
+  "main": "jsonstream.js",
+  "version": "1.0.0",
+  "authors": [
+    "YanagiEiichi <admin@web-tinker.com>"
+  ],
+  "description": "An asynchronous JSON stream parser",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
