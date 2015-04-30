@@ -1,6 +1,6 @@
 var Parser = require('./parser.js');
 
-var LITERALMAP = { true: true, false: false, null: null };
+var LITERALMAP = { 'true': true, 'false': false, 'null': null };
 
 var LiteralParser = function(stream, onupdate) {
   var that = Parser.call(this, stream, onupdate, 'Literal');
