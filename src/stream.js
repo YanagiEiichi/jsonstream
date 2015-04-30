@@ -28,7 +28,7 @@ Stream.prototype.read = function(count, callback) {
   } else {
     var result = this.$data.slice(this.$index, this.$index + count);
     this.$index += count;
-    if(syncCallingCount++ < 4096) {
+    if(syncCallingCount++ < 1024) {
       callback(result);
     } else {
       syncCallingCount = 0;
