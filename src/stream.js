@@ -17,6 +17,7 @@ Stream.prototype.write = function(data) {
   };
 };
 
+var syncCallingCount = 0;
 Stream.prototype.read = function(count, callback) {
   if(this.$reading) throw new Error('Stream: don\'t call repeatedly "read"');
   if(this.$data.length < this.$index + count) {
@@ -27,7 +28,14 @@ Stream.prototype.read = function(count, callback) {
   } else {
     var result = this.$data.slice(this.$index, this.$index + count);
     this.$index += count;
-    callback(result);
+    if(syncCallingCount++ < 4096) {
+      callback(result);
+    } else {
+      syncCallingCount = 0;
+      setTimeout(function() {
+        callback(result);
+      });
+    }
   }
 };
 
