@@ -3,7 +3,7 @@
 
 #### Usage
 
-```
+```javascript
 var stream = new JSONStream();
 
 stream.onupdate = function() {
