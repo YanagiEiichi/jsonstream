@@ -4,73 +4,76 @@ var NumberParser = function(stream, onupdate) {
   var that = Parser.call(this, stream, onupdate, 'Number');
 
   var sign = '';
-  var left = '';
-  var right = '';
-  var exp = '';
+  var integer = '';
+  var decimal = '';
+  var exponent = '';
 
-  var parsePoint = function(data) {
-    if(data === 'e' || data === 'E') {
-      exp = 'E';
-      stream.read(1, parseExponent);
-    } else if(data >= '0' && data <= '9') {
-      right += data;
-      parseDigit(parsePoint);
-    } else {
-      stream.$index--;
+  var state = 'SIGN';
+  var parse = function() {
+    var data;
+    if(stream.state === 'ENDED') {
       end();
+      return;
     }
-  };
-
-  var parseExponent = function(data) {
-    if(data === '-' || data === '+' || (data >= '0' && data <= '9')) {
-      exp += data;
-      parseDigit(parseExponent);
-    } else {
-      stream.$index--;
-      end();
+    while(data = stream.read(1)) {
+      switch(state) {
+        case 'SIGN':
+          state = 'INTEGER';
+          if(data === '-') {
+            sign = '-';
+          } else {
+            stream.$index--;
+          }
+          break;
+        case 'INTEGER':
+          if(data >= '0' && data <= '9') {
+            integer += data;
+          } else if(data === '.') {
+            state = 'DECIMAL';
+            decimal = '.';
+          } else if(data === 'e' || data === 'E') {
+            state = 'EXPONENT';
+            exponent = 'E';
+          } else {
+            stream.$index--;
+            end();
+            return;
+          }
+          break;
+        case 'DECIMAL':
+          if(data >= '0' && data <= '9') {
+            decimal += data;
+          } else if(data === 'e' || data === 'E') {
+            state = 'EXPONENT';
+            exponent = 'E';
+          } else {
+            stream.$index--;
+            end();
+            return;
+          }
+          break;
+        case 'EXPONENT':
+          if(data === '-' || data === '+' || (data >= '0' && data <= '9')) {
+            exponent += data;
+            break;
+          } else {
+            stream.$index--;
+            end();
+            return;
+          }
+      };
     }
-  };
-
-  var parseDigit = function(next) {
-    if(stream.$data.length === stream.$index) { 
-      if(stream.state === 'ENDED') {
-        end();
-      } else {
-        stream.$reading = function() {
-          parseDigit(next);
-        };
-      }
-    } else {
-      stream.read(1, next);
-    };
-  };
-
-  var parseEntry = function(data) {
-    if(data === '-') {
-      sign = '-';
-      stream.read(1, parseEntry);
-    } else if(data === '.') {
-      stream.read(1, parsePoint);
-    } else if(data === 'e' || data === 'E') {
-      exp = 'E';
-      stream.read(1, parseExponent);
-    } else if(data >= '0' && data <= '9') {
-      left += data;
-      parseDigit(parseEntry);
-    } else {
-      stream.$index--;
-      end();
-    }
+    stream.$reading = parse;
   };
 
   var end = function() {
-    var result = (sign + left + '.' + right + exp) * 1;
+    var result = (sign + integer + decimal + exponent) * 1;
     if(result !== result) that.$error('invalid number');
     that.result = result;
     that.$update('COMPLETE');
   };
   
-  stream.read(1, parseEntry);
+  parse();
 
 };
 
