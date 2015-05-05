@@ -18,7 +18,7 @@ var LiteralParser = function(stream, onupdate) {
     that.$error('invalid literal');
   };
 
-  stream.read(1, function(data) {
+  var parse = function(data) {
     switch(data) {
       case 'f':
         return assert('false');
@@ -29,7 +29,14 @@ var LiteralParser = function(stream, onupdate) {
       defaut:
         error();
     }
-  });
+  };
+
+  var data = stream.read(1);
+  if(data) {
+    parse(data);
+  } else {
+    stream.read(1, parse);
+  }
 
 };
 

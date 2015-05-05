@@ -15,7 +15,7 @@ var ValueParser = function(stream, onupdate) {
     that.$update(this.state);
   };
 
-  stream.read(1, function(data) {
+  var parse = function(data) {
     stream.$index--;
     switch(data) {
       case '"':
@@ -31,7 +31,14 @@ var ValueParser = function(stream, onupdate) {
       default:
         return new NumberParser(stream, done);
     }
-  });
+  };
+
+  var data = stream.read(1);
+  if(data) {
+    parse(data);
+  } else {
+    stream.read(1, parse);
+  }
 
 };
 
