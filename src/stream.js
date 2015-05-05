@@ -17,25 +17,20 @@ Stream.prototype.write = function(data) {
   };
 };
 
-var syncCallingCount = 0;
 Stream.prototype.read = function(count, callback) {
   if(this.$reading) throw new Error('Stream: don\'t call repeatedly "read"');
   if(this.$data.length < this.$index + count) {
     if(this.state === 'ENDED') throw new Error('Stream: read from EOF');
-    this.$reading = function() {
-      this.read(count, callback);
-    };
+    if(callback) {
+      this.$reading = function() {
+        this.read(count, callback);
+      };
+    }
   } else {
     var result = this.$data.slice(this.$index, this.$index + count);
     this.$index += count;
-    if(syncCallingCount++ < 1024) {
-      callback(result);
-    } else {
-      syncCallingCount = 0;
-      setTimeout(function() {
-        callback(result);
-      });
-    }
+    if(callback) callback(result);
+    return result;
   }
 };
 
