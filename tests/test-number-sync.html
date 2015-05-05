@@ -1,0 +1,14 @@
+<script src="bower_components/tester/tester.js"></script>
+<script src="../jsonstream.js"></script>
+<script>
+var stream = new JSONStream();
+
+stream.oncomplete = function() {
+  Tester.assert(stream.result === -3141500, 'answer not matched');
+  Tester.feedback(true);
+};
+
+stream.push('-3.1415e6');
+stream.end();
+</script>
+

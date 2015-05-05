@@ -1,0 +1,22 @@
+<script src="bower_components/tester/tester.js"></script>
+<script src="../jsonstream.js"></script>
+<script>
+var stream = new JSONStream();
+
+stream.oncomplete = function() {
+  Tester.assert(stream.result === -3141500, 'answer not matched');
+  Tester.feedback(true);
+};
+
+var json = '-3.1415e6';
+for(var i = 0; i < json.length; i++) void function(char) {
+  setTimeout(function() {
+    stream.push(char);
+  });
+}(json.charAt(i));
+
+setTimeout(function() {
+  stream.end();
+});
+</script>
+
