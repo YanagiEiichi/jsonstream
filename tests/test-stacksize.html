@@ -5,7 +5,7 @@ onload = function() {
   var stream = new JSONStream();
 
   var data = [];
-  for(var i = 0; i < 1E4; i++) {
+  for(var i = 0; i < 2E4; i++) {
     data.push(Math.random());
   }
   var raw = JSON.stringify(data);
@@ -14,7 +14,13 @@ onload = function() {
     Tester.feedback(JSON.stringify(stream.result) === raw);
   };
 
-  stream.push(raw);
+  var point = raw.length / 2 | 0;
+  var raw1 = raw.slice(0, point);
+  var raw2 = raw.slice(point);
+  stream.push(raw1);
+  setTimeout(function() {
+    stream.push(raw2);
+  }, 200);
 };
 </script>
 
