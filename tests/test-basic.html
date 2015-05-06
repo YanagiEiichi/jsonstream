@@ -16,7 +16,7 @@ var test = function(i) {
   stream.push(raw.charAt(i));
   setTimeout(function() {
     test(i + 1);
-  }, 16);
+  });
 };
 
 test(0);
