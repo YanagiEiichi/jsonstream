@@ -33,7 +33,7 @@ switch(true) {
     });
     break;
   default:
-    (1, eval)('var JSONStream');
+    [eval][0]('var JSONStream');
     new Function('return this')().JSONStream = JSONStream;
 }
 
