@@ -28,6 +28,8 @@ var NumberParser = function(stream, onupdate) {
         case 'INTEGER':
           if(data >= '0' && data <= '9') {
             integer += data;
+            var result = stream.readWithRegExp(/^\d+/);
+            if(result) integer += result;
           } else if(data === '.') {
             state = 'DECIMAL';
             decimal = '.';
@@ -43,6 +45,8 @@ var NumberParser = function(stream, onupdate) {
         case 'DECIMAL':
           if(data >= '0' && data <= '9') {
             decimal += data;
+            var result = stream.readWithRegExp(/^\d+/);
+            if(result) decimal += result;
           } else if(data === 'e' || data === 'E') {
             state = 'EXPONENT';
             exponent = 'E';
