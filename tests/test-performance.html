@@ -1,0 +1,36 @@
+<script src="bower_components/tester/tester.js"></script>
+<script src="../jsonstream.js"></script>
+<script>
+onload = function() {
+  var stream = new JSONStream();
+
+  var data = [];
+  for(var i = 0; i < 2E4; i++) {
+    switch(Math.random() * 4 | 0) {
+      case 0:
+        data.push(Math.random());
+        break;
+      case 1:
+        data.push(Math.random() + '');
+        break;
+      case 2:
+        data.push([Math.random()]);
+        break;
+      case 3:
+        var x = {};
+        x[Math.random()] = Math.random();
+        data.push(x);
+    }
+  }
+  var raw = JSON.stringify(data);
+  console.log(raw.length);
+
+  stream.oncomplete = function() {
+    Tester.feedback(JSON.stringify(stream.result) === raw);
+  };
+
+  stream.push(raw);
+  stream.end();
+};
+</script>
+
