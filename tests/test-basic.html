@@ -13,9 +13,9 @@ var answer = '[-3140,"21\\t3",true,[1,2,3],{"a":1,"b":[123,345,567]}]';
 
 var test = function(i) {
   if(i >= raw.length) return stream.end();
-  stream.push(raw.charAt(i));
+  stream.push(raw.slice(i, i + 5));
   setTimeout(function() {
-    test(i + 1);
+    test(i + 5);
   });
 };
 
