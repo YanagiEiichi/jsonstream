@@ -34,6 +34,18 @@ Stream.prototype.read = function(count, callback) {
   }
 };
 
+Stream.prototype.readWithRegExp = function(regexp, callback) {
+  if(this.$reading) throw new Error('Stream: don\'t call repeatedly "read"');
+  var data = this.$data.slice(this.$index, this.$data.length - 1);
+  var result = data.match(regexp);
+  if(result) {
+    result = result[0];
+    this.$index += result.length;
+  }
+  if(callback) callback(result);
+  return result;
+};
+
 Stream.prototype.end = function(data) {
   this.state = 'ENDED';
   this.write('');
