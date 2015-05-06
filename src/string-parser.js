@@ -13,6 +13,12 @@ var StringParser = function(stream, onupdate) {
           if(data !== '"') that.$error('string must be wrapped by double quote');
           that.result = '"';
           that.$update('LOADING');
+          state = 'RAW';
+          break;
+        case 'RAW':
+          stream.$index -= length;
+          var str = stream.readWithRegExp(/^(?:\\u....|\\[^u]|[^"\\\r\n])+/);
+          if(str) that.result += str;
           state = 'CHAR';
           break;
         case 'CHAR':
@@ -23,6 +29,8 @@ var StringParser = function(stream, onupdate) {
             that.result = JSON.parse(that.result);
             that.$update('COMPLETE');
             return;
+          } else {
+            state = 'RAW';
           }
           break;
         case 'BACKSLASH':
@@ -31,12 +39,12 @@ var StringParser = function(stream, onupdate) {
             length = 4;
           } else {
             that.result += data;
-            state = 'CHAR';
+            state = 'RAW';
           }
           break;
         case 'UNICODE':
           that.result += data;
-          state = 'CHAR';
+          state = 'RAW';
           length = 1;
           break;
       }
