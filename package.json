@@ -1,6 +1,6 @@
 {
   "name": "jsonstream",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "An asynchronous JSON loader",
   "main": "src/entity.js",
   "directories": {
