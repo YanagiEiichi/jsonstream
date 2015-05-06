@@ -1,0 +1,24 @@
+<script src="bower_components/tester/tester.js"></script>
+<script src="../jsonstream.js"></script>
+<script>
+onload = function() {
+  var stream = new JSONStream();
+
+  var data = '';
+  for(var i = 0x4E00; i < 0x9FA5; i++) {
+    data += '\\u' + i.toString(16);
+  }
+  data = Array(10).join(data);
+
+  var raw = JSON.stringify(data);
+  console.log(raw.length);
+
+  stream.oncomplete = function() {
+    Tester.feedback(JSON.stringify(stream.result) === raw);
+  };
+
+  stream.push(raw);
+  stream.end();
+};
+</script>
+
